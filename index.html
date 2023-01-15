@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/38dd90b0bd.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="index.css">
+    <title>Lista de recordatorios</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body id="app">
+    <header>
+        <h1>Proyecto recordatorio.js - Carlos Moreno López</h1>
+        <input type="text" id="reminder" placeholder="¿Qué quieres recordar?" v-model="texto" @keyup.enter="nuevoRecordatorio"/>
+    </header>
+    <hr>
+        <p id="tareas"><i class="fa-solid fa-chart-column"></i> <span id="pendientes">{{entradasPendientes}} pendientes de un total de {{totalEntradas}}</span>&nbsp;|&nbsp;<span id="deleteAll"  @click="borrarCompletados"><i class="fa-solid fa-x"></i> Borrar tareas completadas</span></p>
+    <hr/>
+    <main>
+        <div id="recordatorios">
+            <div class="singleReminder" v-for="recordatorio in entradasFiltradas" :key="recordatorio.id">
+                <div class="reminderContent">
+                    <i v-if="recordatorio.hecho" class="fa-regular fa-check-circle" @click="marcarRecordatorio(recordatorio)"></i>
+                    <i v-else class="fa-regular fa-circle" @click="marcarRecordatorio(recordatorio)"></i>
+                    <h2 v-bind:class="{checked:recordatorio.hecho}">{{recordatorio.titulo}}</h2>
+                    <i class="fa-solid fa-square-minus" @click="borrarRecordatorio(recordatorio)"></i>
+                </div>
+                <div class="reminderOptions">
+                    <p>Prioridad</p>
+                    <button id="low" :class="[{marked:recordatorio.prioridad == 1}, {not_marked:recordatorio.prioridad != 1}]" @click="cambiarPrioridad(recordatorio, 1)"><i class="fa-solid fa-arrow-down"></i>Low</button>
+                    <button id="medium" :class="[{marked:recordatorio.prioridad == 2}, {not_marked:recordatorio.priordad != 2}]" @click="cambiarPrioridad(recordatorio, 2)">Normal</button>
+                    <button id="high" :class="[{marked:recordatorio.prioridad == 3}, {not_marked:recordatorio.priordad != 3}]" @click="cambiarPrioridad(recordatorio, 3)"><i class="fa-solid fa-arrow-up"></i>High</button>
+                    <i class='fa-regular fa-clock'></i>
+                    <p>Añadido hace {{Math.floor(((Date.now() - recordatorio.fecha)/1000)/60)}} minutos</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>Desarrollado por "Carlos Moreno López"</p>
+        <p>Código disponible en <a href="https://github.com/carlosmorenolopez7/lista-Vue"><i class="fa-brands fa-github"></i> GitHub</a>.</p>
+    </footer>
+    <script src="index.js"></script>
+</body>
+</html>
